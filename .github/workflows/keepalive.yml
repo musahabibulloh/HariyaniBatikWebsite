@@ -1,0 +1,17 @@
+name: Keep Supabase Alive
+
+on:
+  schedule:
+    # Runs at 00:00 UTC every 2 days
+    - cron: '0 0 */2 * *'
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Keepalive API
+        run: |
+          echo "Pinging Hariyani Batik Supabase Keepalive API..."
+          curl -f -s https://hariyanibatikwebsite.pages.dev/api/keepalive
+          echo -e "\nSupabase has been successfully pinged!"
