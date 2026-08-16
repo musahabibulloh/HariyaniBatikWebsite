@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Instrument_Sans, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import Header from "@/components/Header";
 
 const instrumentSans = Instrument_Sans({
   variable: "--font-instrument-sans",
@@ -30,38 +31,7 @@ export default function RootLayout({
         className={`${instrumentSans.variable} ${cormorantGaramond.variable} antialiased font-sans`}
       >
         {/* Header */}
-        <header className="sticky top-0 z-50 bg-gradient-to-b from-brand-light to-neutral-50 border-b border-brand-primary/10 backdrop-blur-md">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between py-5">
-              <div className="flex items-center gap-4">
-                <Link href="/" className="flex items-center gap-3 no-underline">
-                  <img src="/images/Batik_Hariyani_Ambulu_PNG-removebg-preview.png" alt="Hariyani Batik Logo" className="h-[55px] w-auto object-contain" />
-                  <span className="hidden md:inline-block text-[0.8rem] text-neutral-500 tracking-[0.05em] uppercase border-l-2 border-neutral-300 pl-3">
-                    Batik Tulis Jember
-                  </span>
-                </Link>
-              </div>
-              
-              <nav className="hidden md:flex items-center gap-10">
-                <Link href="/" className="nav-link">Beranda</Link>
-                <Link href="/katalog" className="nav-link">Katalog</Link>
-                <Link href="/kegiatan" className="nav-link">Kegiatan</Link>
-                <Link href="/konsultasi" className="nav-link">Konsultasi</Link>
-                <Link href="/kontak" className="nav-link">Kontak</Link>
-              </nav>
-              
-              <div className="md:hidden">
-                <button className="text-brand-primary p-2">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </header>
+        <Header />
 
         <main className="min-h-[60vh]">
           {children}
