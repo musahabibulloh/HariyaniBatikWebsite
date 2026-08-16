@@ -1,11 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
 
 export default function CatalogClient({ initialProducts }: { initialProducts: any[] }) {
   const [products, setProducts] = useState(initialProducts);
   const [sortBy, setSortBy] = useState("newest");
+
+  useEffect(() => {
+    const fetchLatest = async () => {
+      const { data } = await supabase
+        .from('products')
+        .select('*, product_images(image_url, is_primary)')
+        .eq('status', 'published')
+        .order('created_at', { ascending: false });
+      if (data) {
+        setProducts(data);
+      }
+    };
+    fetchLatest();
+  }, []);
 
   const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const val = e.target.value;
