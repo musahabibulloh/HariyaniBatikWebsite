@@ -5,8 +5,10 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
 export default function CatalogClient({ initialProducts }: { initialProducts: any[] }) {
-  const [products, setProducts] = useState(initialProducts);
+  // Use empty array initially to avoid flashing old cached products
+  const [products, setProducts] = useState<any[]>([]);
   const [sortBy, setSortBy] = useState("newest");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchLatest = async () => {
@@ -18,6 +20,7 @@ export default function CatalogClient({ initialProducts }: { initialProducts: an
       if (data) {
         setProducts(data);
       }
+      setIsLoading(false);
     };
     fetchLatest();
   }, []);
@@ -63,7 +66,21 @@ export default function CatalogClient({ initialProducts }: { initialProducts: an
         </div>
 
         {/* Products Grid */}
-        {products.length === 0 ? (
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 min-h-[400px]">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="bg-white border border-neutral-100 rounded overflow-hidden">
+                <div className="w-full h-[280px] bg-neutral-200 animate-pulse"></div>
+                <div className="p-6">
+                  <div className="h-6 bg-neutral-200 rounded w-3/4 mb-4 animate-pulse"></div>
+                  <div className="h-4 bg-neutral-200 rounded w-full mb-2 animate-pulse"></div>
+                  <div className="h-4 bg-neutral-200 rounded w-5/6 animate-pulse"></div>
+                  <div className="mt-8 h-8 bg-neutral-200 rounded w-1/2 animate-pulse"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : products.length === 0 ? (
           <div className="text-center py-16 px-8">
             <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="mx-auto mb-6 text-neutral-300">
               <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>

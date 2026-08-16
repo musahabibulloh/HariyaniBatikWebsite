@@ -5,8 +5,10 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
 export default function HomeClient({ initialHero, initialProducts }: { initialHero: any, initialProducts: any[] }) {
-  const [heroImage, setHeroImage] = useState(initialHero);
-  const [products, setProducts] = useState(initialProducts);
+  // Use null initially to prevent flashing old cached images
+  const [heroImage, setHeroImage] = useState<any>(null);
+  const [products, setProducts] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchLatest = async () => {
@@ -18,7 +20,10 @@ export default function HomeClient({ initialHero, initialProducts }: { initialHe
         .order('created_at', { ascending: false })
         .limit(1)
         .single();
-      if (heroData) setHeroImage(heroData);
+      
+      if (heroData) {
+        setHeroImage(heroData);
+      }
 
       // Fetch latest products
       const { data: productsData } = await supabase
@@ -26,7 +31,12 @@ export default function HomeClient({ initialHero, initialProducts }: { initialHe
         .select('*, product_images(image_url, is_primary)')
         .eq('status', 'published')
         .limit(6);
-      if (productsData) setProducts(productsData);
+        
+      if (productsData) {
+        setProducts(productsData);
+      }
+      
+      setIsLoading(false);
     };
     fetchLatest();
   }, []);
@@ -83,12 +93,14 @@ export default function HomeClient({ initialHero, initialProducts }: { initialHe
             {/* Hero Image */}
             <div className="relative">
               <div className="relative rounded-lg overflow-hidden shadow-2xl aspect-[4/5] md:aspect-auto md:h-[600px] bg-neutral-200">
-                {heroImage ? (
+                {isLoading ? (
+                  <div className="w-full h-full bg-neutral-300 animate-pulse"></div>
+                ) : heroImage ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img 
                     src={heroImage.image_url} 
                     alt="Hero Batik Tulis Hariyani" 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover animate-fade-in"
                   />
                 ) : (
                   <div className="absolute inset-0 bg-gradient-to-br from-brand-accent to-brand-secondary flex items-center justify-center text-white p-8 text-center">
@@ -142,7 +154,18 @@ export default function HomeClient({ initialHero, initialProducts }: { initialHe
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {(!products || products.length === 0) ? (
+            {isLoading ? (
+              [1, 2, 3].map((i) => (
+                <div key={i} className="bg-white border border-neutral-100 rounded-lg overflow-hidden">
+                  <div className="w-full h-[280px] bg-neutral-200 animate-pulse"></div>
+                  <div className="p-6">
+                    <div className="h-6 bg-neutral-200 rounded w-3/4 mb-4 animate-pulse"></div>
+                    <div className="h-4 bg-neutral-200 rounded w-full mb-2 animate-pulse"></div>
+                    <div className="mt-8 h-8 bg-neutral-200 rounded w-1/2 animate-pulse"></div>
+                  </div>
+                </div>
+              ))
+            ) : (!products || products.length === 0) ? (
               <div className="col-span-full text-center py-12 text-neutral-500 bg-white border border-neutral-200 rounded-lg">
                 <p>Koleksi akan segera hadir. Admin belum menambahkan produk.</p>
               </div>
