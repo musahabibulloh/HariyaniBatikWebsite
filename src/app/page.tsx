@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
-export const runtime = 'edge';
-export const revalidate = 0; // Disable cache to always show latest changes
+export const revalidate = 60; // Disable cache to always show latest changes
 
 export default async function Home() {
   // Fetch featured products from Supabase
