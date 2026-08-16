@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ImageModal from "./ImageModal";
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export default async function ActivityDetail({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;

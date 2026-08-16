@@ -1,7 +1,8 @@
+export const runtime = 'edge';
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export default async function Kegiatan() {
   const { data: activities } = await supabase
