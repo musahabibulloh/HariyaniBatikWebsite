@@ -1,0 +1,6 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#e5e7eb"/>
+  <circle cx="400" cy="250" r="60" fill="#9ca3af"/>
+  <path d="M 370 240 L 370 260 L 430 260 L 430 240 Z M 380 240 L 380 220 L 390 220 L 390 240 Z" fill="#fff"/>
+  <text x="400" y="350" font-family="Arial" font-size="24" fill="#6b7280" text-anchor="middle">Tidak ada gambar</text>
+</svg>
